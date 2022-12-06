@@ -1,0 +1,38 @@
+@font-face {
+  font-family: "Nerko One";
+  src: local("Nerko One"),
+    url(~assets/fonts/NerkoOne-Regular.ttf) format("truetype");
+}
+
+html,
+body {
+  font-family: "Nerko One";
+  font-size: 20px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.bg-green {
+  background-color: rgb(126, 202, 175);
+}
+.link {
+  color: white;
+  transition: 0.2s all;
+}
+.link:hover {
+  color: black;
+  text-decoration: none;
+  transition: 0.2s all;
+}
+.logo {
+  height: 50px;
+  border-radius: 30px;
+}
+.body {
+  margin-bottom: 60px;
+}
