@@ -103,13 +103,74 @@ export default {
   },
   methods: {
     changeView() {
+      // every time you change the page, the input fields should be emptied
+      this.user.email = "";
+      this.user.password = "";
+      this.user.repeatPassword = "";
+      this.user.firstName = "";
+      this.user.lastName = "";
+
+      // change page
       this.isUser = !this.isUser;
     },
-    onSubmit() {
+    async onSubmit() {
+      // user object
+      const payload = {
+        "email": this.user.email,
+        "password": this.user.password,
+        "repeat_password": this.user.repeatPassword,
+        "first_name": this.user.firstName,
+        "last_name": this.user.lastName,
+      };
+      // request options and params as a object
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload), // converting JS object to JSON string
+      };
+
+
+      // variables for API
+      const loginUri = "https://fridgigo-backend.herokuapp.com/v1/api/users/login";
+      const registerUri = "https://fridgigo-backend.herokuapp.com/v1/api/users/register";
+
+      // Login or Register
       if (this.isUser) {
-        console.log("login");
+        // check for payload object (input check)
+        if ((payload.email != "") & (payload.password != "")) {
+          // send a post request with payload as a body of request
+          const res = await fetch(loginUri, requestOptions);
+          const content = await res.json();
+          console.log(content);
+        } else {
+          this.isError = true;
+          this.errorMessage = "Something went wrong. Please try again.";
+        }
       } else {
-        console.log("register");
+        // check for payload object (input check)
+        if (
+          (payload.email != "") &
+          (payload.first_name != "") &
+          (payload.last_name != "") &
+          (payload.password != "") &
+          (payload.password == payload.repeat_password)
+        ) {
+          // check if there was an error before
+          if (this.isError) {
+            this.isError = false;
+            this.errorMessage = "";
+          }
+
+          // send a post request with payload as a body of request
+          const res = await fetch(registerUri, requestOptions);
+          const content = await res.json();
+          console.log(content);
+        } else {
+          this.isError = true;
+          this.errorMessage = "Something went wrong. Please try again.";
+        }
       }
     },
   },
@@ -119,5 +180,8 @@ export default {
 <style scoped>
 .btn-link {
   cursor: pointer;
+}
+.container {
+  margin-bottom: 60px;
 }
 </style>
